@@ -1,0 +1,26 @@
+{
+  "intake_id": "intake_evt_incomplete_002",
+  "source_event_id": "evt-incomplete-002",
+  "organization_name": "Community Test Organisation",
+  "processed_at": "2026-08-23T16:05:00Z",
+  "rules_version": "1.0.0",
+  "review_required": true,
+  "status": "needs_information",
+  "http_status": 422,
+  "route": "intake_follow_up",
+  "priority_score": null,
+  "priority_band": null,
+  "readiness_score": 0,
+  "missing_fields": [
+    "requested_outcome"
+  ],
+  "validation_errors": [
+    "urgency must be one of: low, medium, high, critical",
+    "data_sensitivity must be one of: none, personal, special_category",
+    "beneficiary_count must be a positive integer"
+  ],
+  "risk_flags": [
+    "incomplete_or_invalid_intake"
+  ],
+  "summary": "The intake was not scored because required or valid data is missing."
+}

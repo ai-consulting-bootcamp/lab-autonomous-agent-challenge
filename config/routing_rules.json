@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "required_fields": [
+    "event_id",
+    "organization_name",
+    "challenge_statement",
+    "beneficiary_count",
+    "urgency",
+    "requested_outcome",
+    "data_sensitivity",
+    "submitted_at"
+  ],
+  "allowed_urgency": ["low", "medium", "high", "critical"],
+  "allowed_data_sensitivity": ["none", "personal", "special_category"],
+  "urgency_points": {
+    "low": 10,
+    "medium": 20,
+    "high": 30,
+    "critical": 40
+  },
+  "beneficiary_bands": [
+    {"minimum": 5000, "points": 25},
+    {"minimum": 1000, "points": 20},
+    {"minimum": 250, "points": 12},
+    {"minimum": 0, "points": 5}
+  ],
+  "sensitivity_points": {
+    "none": 0,
+    "personal": 10,
+    "special_category": 20
+  },
+  "senior_review_threshold": 75,
+  "high_priority_threshold": 60,
+  "critical_priority_threshold": 80
+}
+

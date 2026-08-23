@@ -1,0 +1,22 @@
+{
+  "intake_id": "intake_evt_berlin_youth_001",
+  "source_event_id": "evt-berlin-youth-001",
+  "organization_name": "BridgeForward Berlin",
+  "processed_at": "2026-08-23T16:00:00Z",
+  "rules_version": "1.0.0",
+  "review_required": true,
+  "status": "ready_for_consultant_review",
+  "http_status": 200,
+  "route": "senior_impact_consultant",
+  "priority_score": 85,
+  "priority_band": "critical",
+  "readiness_score": 100,
+  "missing_fields": [],
+  "validation_errors": [],
+  "risk_flags": [
+    "special_category_data_requires_authorised_handling",
+    "high_beneficiary_reach",
+    "time_sensitive_case"
+  ],
+  "summary": "BridgeForward Berlin submitted a high-urgency challenge affecting approximately 1800 beneficiaries. A consultant must verify the diagnosis before client use."
+}

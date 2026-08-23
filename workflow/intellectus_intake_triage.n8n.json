@@ -1,0 +1,64 @@
+{
+  "name": "Intellectus - Impact Intake Triage Agent",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "5d653d3c-2fd4-4ae0-92b1-0f2eece38d48",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [-600, 0]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {"id": "1", "name": "event_id", "value": "evt-berlin-youth-001", "type": "string"},
+            {"id": "2", "name": "organization_name", "value": "BridgeForward Berlin", "type": "string"},
+            {"id": "3", "name": "challenge_statement", "value": "The organisation needs to reduce the six-week delay between receiving youth-support requests and assigning each case to a qualified programme coordinator.", "type": "string"},
+            {"id": "4", "name": "beneficiary_count", "value": 1800, "type": "number"},
+            {"id": "5", "name": "urgency", "value": "high", "type": "string"},
+            {"id": "6", "name": "requested_outcome", "value": "Prioritised diagnostic and a consultant-ready discovery brief", "type": "string"},
+            {"id": "7", "name": "data_sensitivity", "value": "special_category", "type": "string"},
+            {"id": "8", "name": "submitted_at", "value": "2026-08-23T16:00:00Z", "type": "string"}
+          ]
+        },
+        "options": {}
+      },
+      "id": "d6e6cd22-c214-46e7-9ee5-e95f2e180c80",
+      "name": "Sample Intake Payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-380, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const p = $json;\nconst required = ['event_id','organization_name','challenge_statement','beneficiary_count','urgency','requested_outcome','data_sensitivity','submitted_at'];\nconst missing = required.filter(k => p[k] === undefined || p[k] === null || (typeof p[k] === 'string' && !p[k].trim()));\nconst errors = [];\nconst urgencyPoints = {low:10, medium:20, high:30, critical:40};\nconst sensitivityPoints = {none:0, personal:10, special_category:20};\nif (!(p.urgency in urgencyPoints)) errors.push('urgency must be one of: low, medium, high, critical');\nif (!(p.data_sensitivity in sensitivityPoints)) errors.push('data_sensitivity must be one of: none, personal, special_category');\nif (!Number.isInteger(p.beneficiary_count) || p.beneficiary_count < 1) errors.push('beneficiary_count must be a positive integer');\nconst normalisedEventId = String(p.event_id || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'missing_event_id';\nconst base = {intake_id:`intake_${normalisedEventId}`,source_event_id:p.event_id,organization_name:p.organization_name,processed_at:p.submitted_at,rules_version:'1.0.0',review_required:true};\nif (missing.length || errors.length) return [{json:{...base,status:'needs_information',http_status:422,route:'intake_follow_up',priority_score:null,priority_band:null,readiness_score:0,missing_fields:missing,validation_errors:errors,risk_flags:['incomplete_or_invalid_intake'],summary:'The intake was not scored because required or valid data is missing.'}}];\nconst beneficiaryPoints = p.beneficiary_count >= 5000 ? 25 : p.beneficiary_count >= 1000 ? 20 : p.beneficiary_count >= 250 ? 12 : 5;\nconst score = Math.min(100, urgencyPoints[p.urgency] + beneficiaryPoints + sensitivityPoints[p.data_sensitivity] + (p.requested_outcome.trim().length >= 15 ? 10 : 3) + (p.challenge_statement.trim().length >= 80 ? 5 : 2));\nconst readiness = [p.challenge_statement.trim().length >= 80,p.requested_outcome.trim().length >= 15,p.beneficiary_count > 0,p.urgency in urgencyPoints,p.data_sensitivity in sensitivityPoints].filter(Boolean).length * 20;\nconst band = score >= 80 ? 'critical' : score >= 60 ? 'high' : 'standard';\nconst route = p.data_sensitivity === 'special_category' || score >= 75 ? 'senior_impact_consultant' : 'impact_consultant';\nconst flags = [];\nif (p.data_sensitivity !== 'none') flags.push(`${p.data_sensitivity}_data_requires_authorised_handling`);\nif (p.beneficiary_count >= 1000) flags.push('high_beneficiary_reach');\nif (['high','critical'].includes(p.urgency)) flags.push('time_sensitive_case');\nreturn [{json:{...base,status:'ready_for_consultant_review',http_status:200,route,priority_score:score,priority_band:band,readiness_score:readiness,missing_fields:[],validation_errors:[],risk_flags:flags,summary:`${p.organization_name} submitted a ${p.urgency}-urgency challenge affecting approximately ${p.beneficiary_count} beneficiaries. A consultant must verify the diagnosis before client use.`}}];"
+      },
+      "id": "3d101c4c-c70a-48bb-a8f6-78ea922b739f",
+      "name": "Validate Score and Route",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-120, 0]
+    },
+    {
+      "parameters": {},
+      "id": "8c83cc33-d155-4ae8-a303-acde5f65aebd",
+      "name": "Inspectable Output Record",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [140, 0]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {"main": [[{"node": "Sample Intake Payload", "type": "main", "index": 0}]]},
+    "Sample Intake Payload": {"main": [[{"node": "Validate Score and Route", "type": "main", "index": 0}]]},
+    "Validate Score and Route": {"main": [[{"node": "Inspectable Output Record", "type": "main", "index": 0}]]}
+  },
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "versionId": "4cf784ab-36ed-4028-a156-dbb9123a9a02",
+  "meta": {"templateCredsSetupCompleted": true},
+  "tags": []
+}
