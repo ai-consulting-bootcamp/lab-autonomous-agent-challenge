@@ -155,3 +155,28 @@ Alternatives considered:
 
 The prototype can advance to staging only when all automated tests pass, a reviewer reproduces the committed success record, the invalid fixture is blocked, the n8n mapping matches the reference output, and the data/security owners approve the retention and access model. Production use remains conditional on authentication, persistent idempotency, retry/error notification, monitoring and documented human override.
 
+## 7. Prototype Learnings and Next Steps
+
+### What the prototype demonstrated
+
+- The critical path does not need an LLM: explicit rules make priority and access routing deterministic, testable and easier to audit.
+- A manual-trigger n8n workflow is sufficient to validate the mapping before adding credentials or a live webhook.
+- Invalid inputs must create an observable follow-up record instead of disappearing or receiving a guessed score.
+- A stable intake ID is necessary even in the minimal version because event systems can retry deliveries.
+- The most brittle point is not the score calculation; it is upstream schema drift between the intake form and the workflow mapping.
+
+### Changes made after testing
+
+- Kept the Python runner as the executable reference contract and n8n as the production orchestration target.
+- Added a controlled invalid fixture and explicit exit code `2` so mapping failures are inspectable.
+- Replaced a runtime-dependent hash module in the n8n node with dependency-free event-ID normalisation for wider portability.
+- Added rules-version, source-event and processing-time fields to the destination record for auditability.
+
+### Immediate next steps
+
+1. Import the n8n workflow into staging and confirm its output matches the Python reference record field by field.
+2. Replace the manual trigger with an authenticated webhook while preserving the input schema.
+3. Upsert the output into the case system on `intake_id` and test a repeated event.
+4. Add retry limits, error notification and a daily schema-drift alert.
+5. Run a consultant calibration session on synthetic cases before approving the priority thresholds.
+6. Obtain security and data-protection approval before any real personal or special-category data is processed.
