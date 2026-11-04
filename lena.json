@@ -1,0 +1,9 @@
+{
+  "name": "Lena",
+  "email": "lena@example.com",
+  "company": "ABC GmbH",
+  "company_size": 120,
+  "industry": "logistics",
+  "job_title": "Head of Operations",
+  "message": "We're moving our warehouses to a new system in January and need a solution before then."
+}
