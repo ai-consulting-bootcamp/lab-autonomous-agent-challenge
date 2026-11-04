@@ -61,3 +61,39 @@
 
 ## Limitations
 The implemented workflow is a manually triggered **AI-assisted automation**, not yet an autonomous unattended service. There is no scheduling, monitoring, external tool selection or live intake trigger. A production-grade autonomous agent would require these capabilities and a separate privacy/security assessment.
+
+## 7. Cost Analysis (Optional Extension)
+**Basis:** Illustrative planning scenario, not measured usage or a vendor quote. Assume 1,000 inquiries/month, each using approximately 1,000 input tokens and 300 output tokens. Replace the unit rates below with current provider pricing before any purchasing decision.
+
+| Cost driver | Assumption | Illustrative monthly cost |
+|---|---|---|
+| Model input tokens | 1,000,000 tokens × assumed $0.15 / million | $0.15 |
+| Model output tokens | 300,000 tokens × assumed $0.60 / million | $0.18 |
+| Model subtotal | Before retries and overhead | **$0.33** |
+| Model with 2× safety allowance | Retries, prompt growth, extra model calls | **$0.66** |
+| n8n hosting / plan | Existing lab instance in MVP; production plan TBD | Not estimated |
+| Google Sheets / storage | Existing test account; production storage and controls TBD | Not estimated |
+| Human review | Every inquiry requires review; staff time not yet measured | Not estimated |
+
+**Scaling illustration:** At 10,000 inquiries/month under the same assumptions, raw model token spend would be approximately $3.30, or $6.60 with the 2× allowance. This is **not a total operating cost**: staff review, hosting, security, integration, support and data protection may dominate. A paid pilot should track actual tokens, cost per inquiry, handling time saved, and failure/retry rate.
+
+**Alternatives and trade-offs:** Deterministic keyword routing avoids most model expense but handles ambiguous inquiries poorly. A larger model may improve quality at a higher unit cost. The MVP uses one smaller model and mandatory human review instead of expensive multi-agent orchestration.
+
+## 8. User Research (Optional Extension)
+**Status:** Research plan only. No interviews, survey responses, or willingness-to-pay data have been collected; the product-market assumptions remain unvalidated.
+
+**Research question:** Do small and medium-sized law firms have enough repetitive intake work to justify a paid triage tool, and what safeguards would they require?
+
+**Recruitment:** Interview 5–8 lawyers, paralegals and intake administrators across firms with approximately 2–30 lawyers. Seek different practice areas and differing inquiry volumes; do not upload any real-client inquiries into the demo.
+
+**Interview prompts:**
+1. How many new inquiries arrive per week, and through which channels?
+2. Who currently reads, categorizes and routes them, and how long does it take?
+3. Which errors or delays are most costly? How are urgent matters identified?
+4. What intake software, confidentiality policies and approval steps are mandatory?
+5. Would structured AI-generated drafts save time if every result required human review?
+6. What pilot success criteria and pricing arrangement would be acceptable?
+
+**Validation plan:** Show the fictional demo and ask each participant to evaluate accuracy, usefulness, missing fields and trust; separately measure current vs assisted processing time on synthetic cases. Record concerns and patterns, not client secrets. Conduct a small, supervised pilot only after privacy, security and legal reviews.
+
+**Decision gates:** Proceed beyond MVP only if users report a recurrent intake bottleneck, the solution demonstrates measurable time savings on synthetic cases, lawyers accept the mandatory review workflow, and a plausible willingness-to-pay signal emerges. Otherwise simplify the product or stop.
