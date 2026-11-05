@@ -1,23 +1,19 @@
-# Architect the bot someone will actually pay for
+# Kleinanzeigen Lead Qualifier (fictional demo)
 
-**Track:** Module 3 — Advanced agents & n8n · **When:** Week 5, Day 4 · **Status:** Required
+Lead qualification agent for an Ironhack AI Consulting & Integration Bootcamp lab.
+Concept demo with fictional data. Not affiliated with or endorsed by Kleinanzeigen.
 
-This repository contains everything you need for this lab.
+**What it does:** a business describes itself in a form or chat. The agent searches a fictional 2026 offer knowledge base (Pinecone + Cohere reranker), scores the lead 0-100, rates it Hot / Warm / Cold / Needs review, picks the sales team, drafts a reply (a human sends it) and saves the record to Airtable.
 
-## Files
+## Setup
+1. `pip install -r requirements.txt`
+2. Copy `.env.example` to `.env` and fill in the keys
+3. `python app.py`
 
-- [`instructions.md`](./instructions.md) — the lab instructions
-- [`rubric.md`](./rubric.md) — how your submission is graded; this is what the AI reviewer checks your PR against
+## Deploy to Render (staging)
+1. New → Web Service → connect this repo
+2. Build command: `pip install -r requirements.txt` · Start command: `python app.py`
+3. Environment: add every variable from `.env.example`
+4. Free plan: sleeps after 15 minutes idle and takes about a minute to wake
 
-## How to complete this lab
-
-1. **Fork** this repository.
-2. Do the work described in `instructions.md`, committing to your fork.
-3. Open a **pull request** back into this repository.
-4. You'll receive **AI feedback** on your PR based on `rubric.md`. Address any blocking feedback and push updates to the same PR.
-
-## Submission hygiene
-
-- Keep this repository scoped to this lab only — no unrelated projects or personal files.
-- Use clear, descriptive filenames.
-- Remove secrets, API keys, and tokens before committing.
+Related: n8n workflow `kleinanzeigen_lead_qualifier.json` (same prompt, index and table).
