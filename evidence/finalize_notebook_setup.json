@@ -1,0 +1,4 @@
+{
+  "status": "PASS",
+  "output": "PASS: helpers ready; secrets are not printed"
+}

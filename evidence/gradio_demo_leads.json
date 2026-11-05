@@ -1,0 +1,116 @@
+{
+  "status": "PASS",
+  "pause_seconds_between_leads": 7,
+  "leads_run": 4,
+  "results": [
+    {
+      "lead_number": 1,
+      "business_name": "Spreeblick Automobile GmbH",
+      "status": "PASS",
+      "start_time_utc": "2026-11-05T19:06:23.746890Z",
+      "rating": "Hot",
+      "score": 95,
+      "breakdown": {
+        "category": 20,
+        "volume": 25,
+        "need": 20,
+        "timeline": 15,
+        "budget": 15
+      },
+      "sales_team": "Mid-Market Sales",
+      "reason": "Vehicles has a 2026 bundle; volume is 600 listings; need is clear and includes API sync; timeline is a specific date; budget is stated.",
+      "seconds": 2.9,
+      "measured_wall_seconds": 2.918596,
+      "token_usage": {
+        "input_tokens": 2100,
+        "output_tokens": 238,
+        "total_tokens": 2338
+      },
+      "expected_rating": "Hot",
+      "expected_sales_team": "Mid-Market Sales",
+      "expected_match": true
+    },
+    {
+      "lead_number": 2,
+      "business_name": "Nordlicht Moebel GmbH",
+      "status": "PASS",
+      "start_time_utc": "2026-11-05T19:06:33.670502Z",
+      "rating": "Warm",
+      "score": 65,
+      "breakdown": {
+        "category": 20,
+        "volume": 20,
+        "need": 20,
+        "timeline": 5,
+        "budget": 0
+      },
+      "sales_team": "SMB Sales",
+      "reason": "Supported category, 150 listings, clear need; vague timeline and no budget.",
+      "seconds": 3.4,
+      "measured_wall_seconds": 3.441004,
+      "token_usage": {
+        "input_tokens": 1650,
+        "output_tokens": 209,
+        "total_tokens": 1859
+      },
+      "expected_rating": "Warm",
+      "expected_sales_team": "SMB Sales",
+      "expected_match": true
+    },
+    {
+      "lead_number": 3,
+      "business_name": "Private",
+      "status": "PASS",
+      "start_time_utc": "2026-11-05T19:06:44.116568Z",
+      "rating": "Cold",
+      "score": 0,
+      "breakdown": {
+        "category": 0,
+        "volume": 0,
+        "need": 0,
+        "timeline": 0,
+        "budget": 0
+      },
+      "sales_team": "None (self-service)",
+      "reason": "This looks like a private seller with only a few used items, so no business package is needed. Scoring reflects a non-private category label in the form, but the inquiry content matches the free private account use case from the knowledge base. [Private seller rule applied in code]",
+      "seconds": 3.3,
+      "measured_wall_seconds": 3.33955,
+      "token_usage": {
+        "input_tokens": 1974,
+        "output_tokens": 248,
+        "total_tokens": 2222
+      },
+      "expected_rating": "Cold",
+      "expected_sales_team": "None (self-service)",
+      "expected_match": true
+    },
+    {
+      "lead_number": 4,
+      "business_name": "Test Shop",
+      "status": "PASS",
+      "start_time_utc": "2026-11-05T19:06:54.459262Z",
+      "rating": "Needs review",
+      "score": 0,
+      "breakdown": {
+        "category": 0,
+        "volume": 0,
+        "need": 0,
+        "timeline": 0,
+        "budget": 0
+      },
+      "sales_team": "Sales manager",
+      "reason": "Input guard: inquiry contains instructions to the AI. No LLM call.",
+      "seconds": 0.0,
+      "measured_wall_seconds": 0.000415,
+      "token_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "status": "LLM not called by input guard"
+      },
+      "expected_rating": "Needs review",
+      "expected_sales_team": "Sales manager",
+      "expected_match": true
+    }
+  ]
+}

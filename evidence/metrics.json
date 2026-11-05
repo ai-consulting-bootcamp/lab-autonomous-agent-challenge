@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "leads_with_measured_duration": 4,
+  "average_seconds_per_lead": 2.4,
+  "max_seconds_per_lead": 3.4,
+  "model": "gpt-5.4-mini",
+  "input_price_usd_per_1m_tokens": 0.75,
+  "output_price_usd_per_1m_tokens": 4.5,
+  "leads_with_measured_token_usage": 4,
+  "total_input_tokens": 5724,
+  "total_output_tokens": 695,
+  "average_input_tokens_per_lead": 1431.0,
+  "average_output_tokens_per_lead": 173.75,
+  "average_tokens_per_lead": 1604.75,
+  "cost_usd_per_lead": 0.001855125,
+  "token_usage_status": "PASS"
+}

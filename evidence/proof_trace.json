@@ -1,0 +1,153 @@
+{
+  "status": "PASS",
+  "execution_id": "gradio-01847d0d",
+  "input_payload": {
+    "Business name": "Nordlicht Moebel GmbH",
+    "Contact name": "Lena Hartmann",
+    "Contact email": "lead@example.com",
+    "Business category": "Home & garden",
+    "Listings per month": 150,
+    "Inquiry": "We sell used furniture from our Berlin warehouse and want to list around 150 items a month. Which package fits us, and can we promote our best items? We would like to start soon.",
+    "Consent": [
+      "I agree that my data is processed to answer my inquiry."
+    ],
+    "submittedAt": "2026-11-05T19:06:12.049458Z",
+    "formMode": "production"
+  },
+  "steps": [
+    {
+      "step": "input guard",
+      "status": "PASS",
+      "start_time_utc": "2026-11-05T19:06:12.121129Z",
+      "duration_seconds": 4e-06,
+      "key_output": {
+        "accepted": true,
+        "inquiry_characters": 178
+      }
+    },
+    {
+      "step": "retrieve",
+      "status": "PASS",
+      "start_time_utc": "2026-11-05T19:06:12.121150Z",
+      "duration_seconds": 0.931858,
+      "key_output": {
+        "chunks_returned": 5,
+        "chunks": [
+          "{\n  \"Business name\": \"Nordlicht Moebel GmbH\",\n  \"Contact name\": \"Lena Hartmann\",\n  \"Contact email\": \"lead@example.com\",\n  \"Business category\": \"Home & garden\",\n  \"Listings per month\": 150,\n  \"Inquiry\": \"We sell used furniture from our Berlin warehouse and want to list around 150 items a month. Which package fits us, and can we promote our best items? We would like to start soon.\"\n}",
+          "{\n  \"Business name\": \"Nordlicht Moebel GmbH\",\n  \"Contact name\": \"Lena Hartmann\",\n  \"Contact email\": \"lead@example.com\",\n  \"Business category\": \"Home & garden\",\n  \"Listings per month\": 150,\n  \"Inquiry\": \"We sell used furniture from our Berlin warehouse and want to list around 150 items a month. Which package fits us, and can we promote our best items? We would like to start soon.\"\n}",
+          "{\n  \"Business name\": \"Nordlicht Moebel GmbH\",\n  \"Contact name\": \"Lena Hartmann\",\n  \"Contact email\": \"lead@example.com\",\n  \"Business category\": \"Home & garden\",\n  \"Listings per month\": 150,\n  \"Inquiry\": \"We sell used furniture from our Berlin warehouse and want to list around 150 items a month. Which package fits us, and can we promote our best items? We would like to start soon.\"\n}",
+          "{\n  \"Business name\": \"Nordlicht Moebel GmbH\",\n  \"Contact name\": \"Lena Hartmann\",\n  \"Contact email\": \"lead@example.com\",\n  \"Business category\": \"Home & garden\",\n  \"Listings per month\": 150,\n  \"Inquiry\": \"We sell used furniture from our Berlin warehouse and want to list around 150 items a month. Which package fits us, and can we promote our best items? We would like to start soon.\"\n}",
+          "{\n  \"business_name\": \"Nordlicht Moebel GmbH\",\n  \"category\": \"Home & garden\",\n  \"listing_volume\": 150,\n  \"need\": \"List used furniture and promote best items\",\n  \"budget\": \"Not stated\",\n  \"timeline\": \"soon\",\n  \"score_breakdown\": {\n    \"category\": 20,\n    \"volume\": 20,\n    \"need\": 20,\n    \"timeline\": 5,\n    \"budget\": 0\n  },\n  \"lead_score\": 65,\n  \"rating\": \"Warm\",\n  \"score_reason\": \"Supported category, 150 listings, clear need; vague timeline and no budget.\",\n  \"drafted_reply\": \"Hello ...\",\n  \"kb_sources\": [\n    \"Section 2.2 Plus package\",\n    \"Section 3.3 Home & Garden Retail bundle\"\n  ]\n}"
+        ]
+      }
+    },
+    {
+      "step": "LLM structured output",
+      "status": "PASS",
+      "start_time_utc": "2026-11-05T19:06:13.053062Z",
+      "duration_seconds": 2.459064,
+      "key_output": {
+        "rating": "Warm",
+        "lead_score": 65,
+        "sales_team": "SMB Sales",
+        "token_usage": {
+          "input_tokens": 1650,
+          "output_tokens": 213,
+          "total_tokens": 1863
+        }
+      }
+    },
+    {
+      "step": "check",
+      "status": "PASS",
+      "start_time_utc": "2026-11-05T19:06:15.512176Z",
+      "duration_seconds": 7e-06,
+      "key_output": {
+        "rating": "Warm",
+        "lead_score": 65,
+        "score_breakdown": {
+          "category": 20,
+          "volume": 20,
+          "need": 20,
+          "timeline": 5,
+          "budget": 0
+        },
+        "sales_team": "SMB Sales"
+      }
+    },
+    {
+      "step": "save_lead to Airtable",
+      "status": "PASS",
+      "start_time_utc": "2026-11-05T19:06:15.512205Z",
+      "duration_seconds": 2.449127,
+      "key_output": {
+        "record_id": "recMYbLIbIWkjQDTF",
+        "execution_id": "gradio-01847d0d",
+        "source": "gradio proof"
+      }
+    }
+  ],
+  "total_run_time_seconds": 5.911956,
+  "token_usage": {
+    "input_tokens": 1650,
+    "output_tokens": 213,
+    "total_tokens": 1863
+  },
+  "result": {
+    "business_name": "Nordlicht Moebel GmbH",
+    "category": "Home & garden",
+    "listing_volume": 150,
+    "need": "List used furniture and promote best items",
+    "budget": "Not stated",
+    "timeline": "soon",
+    "score_breakdown": {
+      "category": 20,
+      "volume": 20,
+      "need": 20,
+      "timeline": 5,
+      "budget": 0
+    },
+    "lead_score": 65,
+    "rating": "Warm",
+    "score_reason": "Supported category, 150 listings, clear need; vague timeline and no budget.",
+    "sales_team": "SMB Sales",
+    "drafted_reply": "Hello Lena, thanks for reaching out. For a Home & Garden business with around 150 listings a month, the Plus package and the Home & Garden Retail bundle look like a fit. Promotion options for your best items are available; a sales rep will confirm the exact setup. When would you like to start, and do you already have a budget in mind?",
+    "kb_sources": [
+      "Section 2.2 Plus package",
+      "Section 3.3 Home & Garden Retail bundle"
+    ]
+  },
+  "retrieved_chunks": [
+    "{\n  \"Business name\": \"Nordlicht Moebel GmbH\",\n  \"Contact name\": \"Lena Hartmann\",\n  \"Contact email\": \"lead@example.com\",\n  \"Business category\": \"Home & garden\",\n  \"Listings per month\": 150,\n  \"Inquiry\": \"We sell used furniture from our Berlin warehouse and want to list around 150 items a month. Which package fits us, and can we promote our best items? We would like to start soon.\"\n}",
+    "{\n  \"Business name\": \"Nordlicht Moebel GmbH\",\n  \"Contact name\": \"Lena Hartmann\",\n  \"Contact email\": \"lead@example.com\",\n  \"Business category\": \"Home & garden\",\n  \"Listings per month\": 150,\n  \"Inquiry\": \"We sell used furniture from our Berlin warehouse and want to list around 150 items a month. Which package fits us, and can we promote our best items? We would like to start soon.\"\n}",
+    "{\n  \"Business name\": \"Nordlicht Moebel GmbH\",\n  \"Contact name\": \"Lena Hartmann\",\n  \"Contact email\": \"lead@example.com\",\n  \"Business category\": \"Home & garden\",\n  \"Listings per month\": 150,\n  \"Inquiry\": \"We sell used furniture from our Berlin warehouse and want to list around 150 items a month. Which package fits us, and can we promote our best items? We would like to start soon.\"\n}",
+    "{\n  \"Business name\": \"Nordlicht Moebel GmbH\",\n  \"Contact name\": \"Lena Hartmann\",\n  \"Contact email\": \"lead@example.com\",\n  \"Business category\": \"Home & garden\",\n  \"Listings per month\": 150,\n  \"Inquiry\": \"We sell used furniture from our Berlin warehouse and want to list around 150 items a month. Which package fits us, and can we promote our best items? We would like to start soon.\"\n}",
+    "{\n  \"business_name\": \"Nordlicht Moebel GmbH\",\n  \"category\": \"Home & garden\",\n  \"listing_volume\": 150,\n  \"need\": \"List used furniture and promote best items\",\n  \"budget\": \"Not stated\",\n  \"timeline\": \"soon\",\n  \"score_breakdown\": {\n    \"category\": 20,\n    \"volume\": 20,\n    \"need\": 20,\n    \"timeline\": 5,\n    \"budget\": 0\n  },\n  \"lead_score\": 65,\n  \"rating\": \"Warm\",\n  \"score_reason\": \"Supported category, 150 listings, clear need; vague timeline and no budget.\",\n  \"drafted_reply\": \"Hello ...\",\n  \"kb_sources\": [\n    \"Section 2.2 Plus package\",\n    \"Section 3.3 Home & Garden Retail bundle\"\n  ]\n}"
+  ],
+  "airtable_record": {
+    "id": "recMYbLIbIWkjQDTF",
+    "createdTime": "2026-11-05T19:06:16.000Z",
+    "fields": {
+      "Budget": "Not stated",
+      "Category": "Home & garden",
+      "Listing volume": 150,
+      "Drafted reply": "Hello Lena, thanks for reaching out. For a Home & Garden business with around 150 listings a month, the Plus package and the Home & Garden Retail bundle look like a fit. Promotion options for your best items are available; a sales rep will confirm the exact setup. When would you like to start, and do you already have a budget in mind?",
+      "Execution ID": "gradio-01847d0d",
+      "Timeline": "soon",
+      "Business name": "Nordlicht Moebel GmbH",
+      "Consent": true,
+      "Lead score": 65,
+      "Submitted at": "2026-11-05T19:06:15.512Z",
+      "Rating": "Warm",
+      "Sales team": "SMB Sales",
+      "Score reason": "Supported category, 150 listings, clear need; vague timeline and no budget.",
+      "KB sources": "Section 2.2 Plus package, Section 3.3 Home & Garden Retail bundle",
+      "Inquiry": "We sell used furniture from our Berlin warehouse and want to list around 150 items a month. Which package fits us, and can we promote our best items? We would like to start soon.",
+      "Need": "List used furniture and promote best items",
+      "Contact email": "lead@example.com",
+      "Next action": "Warm: rep sends drafted follow-up question",
+      "Source": "gradio proof",
+      "Contact name": "Lena Hartmann"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "index": "kleinanzeigen-business-kb",
+  "dimension": 512,
+  "record_count": 611,
+  "raw_stats": {
+    "dimension": 512,
+    "total_vector_count": 611,
+    "index_fullness": 0.0
+  }
+}
