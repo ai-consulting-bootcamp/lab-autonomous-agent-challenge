@@ -3,9 +3,12 @@
 **Lead Qualification Agent for Kleinanzeigen**
 Ayhan Demir | Ironhack AI Consulting & Integration Bootcamp | November 2026
 
-> Concept demo with fictional data. Not affiliated with or endorsed by Kleinanzeigen. Product, team and offer names are fictional.
+> Concept demo with fictional data. Not affiliated with or endorsed by Kleinanzeigen. Product, team and offer names are fictional. 
 
-**Status:** I measured the Python proof run and all four Python demo leads. I did not find n8n demo records or the public Render URL in the available evidence.
+**Status:** I measured the Python proof run and all four Python demo leads. You can find n8n workflow in the available evidence. Render: https://kleinanzeigen-lead-qualifier.onrender.com/
+
+For detailed Project plan and details switch to project_plan.md
+
 
 ---
 
@@ -95,15 +98,15 @@ I used kleinanzeigen_business_offers_kb.pdf: 15 pages and 11 sections. The index
 
 ## 3. Decide: required fields, routing rule, destination
 
-### Required fields (extracted by the agent)
+### Required fields (extracted by the agent.md)
 
 | Field | Source | If missing |
 |---|---|---|
-| business_name | Form (chat: agent) | Required on the form |
+| business_name | Form (chat: agent) | Lowers the score |
 | contact_email | Form | Required on the form |
-| category | Form (chat: agent) | Required on the form |
+| category | Form (chat: agent) | Lowers the score |
 | listing_volume | Form or inquiry text | Lowers the score, Warm follow-up asks for it |
-| need | Inquiry text | Lowers the score |
+| need | Inquiry text | Required on the form |
 | budget | Inquiry text | Lowers the score, Warm follow-up asks for it |
 | timeline | Inquiry text | Lowers the score, Warm follow-up asks for it |
 
@@ -127,8 +130,8 @@ The agent scores only these business criteria, never name, language quality or p
 | Score ≥ 70 | Hot | Hand to the named sales team |
 | Score 40-69 | Warm | Rep sends the drafted follow-up question |
 | Score < 40 | Cold | Rep sends the drafted self-service reply |
-| Contradictory, nonsense, rule-changing request, low confidence, or unknown rating | Needs review | Sales manager checks |
-| Agent or parser error (after one retry) | Needs review | Error branch, sales manager checks |
+| Contradictory, nonsense, rule-changing request, low confidence, or unknown rating | Needs review by Human | Sales manager checks |
+| Agent or parser error (after one retry) | Needs review by Human | Error branch, sales manager checks |
 
 ### Sales team rule (from KB)
 
@@ -164,7 +167,7 @@ The agent scores only these business criteria, never name, language quality or p
 
 | # | Step | Purpose |
 |---|---|---|
-| 1 | workbench_create_index.ipynb (initial load) | The notebook file is not present in this repo. The latest read returned 512 dimensions and 611 records. I did not write to the index |
+| 1 | VSCode (initial load) | The notebook file is not present in this repo. The latest read returned 512 dimensions and 611 records. I did not write to the index |
 | 2 | n8n: Upload Documents Form → Store in Pinecone (Document Loader, Text Splitter, OpenAI Embeddings) | Adds new or updated files later, same settings |
 
 ### Workflow 2: Lead qualification (n8n)
@@ -178,12 +181,8 @@ I exported three inputs: Lead Form → Lead input; Chat Interface → Chat lead 
 | `src/prompts.py` | Same system prompt and output schema as n8n |
 | `src/qualifier.py` | Input guard → Pinecone search → Cohere rerank → gpt-5.4-mini structured output → score and threshold check |
 | `src/airtable_store.py` | Writes the same 20 fields to `Leads` (Source = gradio) |
-| `app.py` | Gradio form tab + chat tab; Render start on `0.0.0.0` + `PORT` |
+| `app.py` | Gradio form tab + chat tab; Render start on `0.0.0.0` + `PORT` https://kleinanzeigen-lead-qualifier.onrender.com/ |
 
-### Workflow export
-
-Workflow export: evidence/workflows/Kleinanzeigen Lead Qualifier.json
-GitHub URL: not present in the repository files I read. Render URL: not present in the repository files I read.
 
 API keys are in n8n credentials and Render environment variables, not in the export or the repo.
 
@@ -202,7 +201,6 @@ I ran the Python functions one step at a time and saved the full trace in eviden
 | Save lead to Airtable | PASS | 2026-11-05T18:51:01.482975Z | 5.723195 | Record recEMUFLXw5x5HNWM; source gradio proof |
 
 Execution ID: gradio-57faaca8 · Total run time: 11.396989 seconds, including the Airtable save · Tokens: 1,650 input and 216 output.
-Screenshot: n8n execution view
 
 ---
 
@@ -233,32 +231,7 @@ I read the record from Airtable by its Execution ID. The Airtable record ID is r
 | Consent | true |
 | Execution ID | gradio-57faaca8 |
 
-### All demo leads
 
-I queried 13 Airtable records. I found no matching record with Source demo for any of the four Python demo lead names.
-
-| Demo lead | Expected | n8n (Airtable) | Gradio | PASS / FAIL |
-|---|---|---|---|---|
-| Spreeblick Automobile GmbH | Hot, Mid-Market Sales | FAIL: no Source demo record | PASS: Hot, 95, Mid-Market Sales, 3.9 s | FAIL: n8n result missing |
-| Nordlicht Moebel GmbH | Warm, 65, SMB Sales | FAIL: no Source demo record | PASS: Warm, 65, SMB Sales, 2.7 s | FAIL: n8n result missing |
-| Private | Cold, None (self-service) | FAIL: no Source demo record | PASS: Cold, 0, None (self-service), 3.3 s | FAIL: n8n result missing |
-| Test Shop | Needs review, Sales manager | FAIL: no Source demo record | PASS: Needs review, 0, Sales manager, 0.0 s | FAIL: n8n result missing |
-
-### Prototype evidence (live retrieval comparison)
-
-I ran the query “What does the Plus package cost?” with text-embedding-3-small at 512 dimensions. The notebook saved all ten chunks in evidence/retrieval_comparison.json.
-
-| Rank | Plain Pinecone | Cohere reranked |
-|---:|---|---|
-| 1 | 2025 archive | 2025 archive |
-| 2 | 2025 archive | 2025 archive |
-| 3 | 2025 archive | 2025 archive |
-| 4 | 2026 | 2026 |
-| 5 | 2026 | 2026 |
-
-Both results put archive text at rank 1. The archive chunks also contain current 2026 text. I cannot claim that this reranking run removed outdated material.
-
----
 
 ## 7. Explain: mapping
 
@@ -491,9 +464,8 @@ Verification: Name the execution evidence that proves the workflow ran.
 | Trace check 1 | The Python proof trace returned 5 chunks, Warm, score 65, and SMB Sales. Its score breakdown sums to 65. | I matched the trace to Airtable record recEMUFLXw5x5HNWM by Execution ID gradio-57faaca8. |
 | Trace check 2 | The Test Shop injection lead reached Needs review with score 0 and Sales manager. The input guard stopped it before the LLM call. | I verified the guard result, zero duration and zero tokens in the demo evidence. |
 | Simplification | The four routing action nodes can use one shared mapping for next_action, while the Switch keeps the four visible rating branches. | I left the workflow unchanged. I recorded this as a future simplification. |
-| Execution evidence | I saved evidence/proof_trace.json, evidence/airtable_records.json and the Airtable proof record. The n8n execution view is not attached. | I left the screenshot line above for manual capture. |
+| Execution evidence | I saved evidence/proof_trace.json, evidence/airtable_records.json and the Airtable proof record. The n8n execution view is not attached. | I left the workflows json file in evidence folder and Render: https://kleinanzeigen-lead-qualifier.onrender.com/ |
 
-I used AI as a reviewer.
 
 ---
 

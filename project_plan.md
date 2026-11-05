@@ -6,6 +6,7 @@ Ayhan Demir | Ironhack AI Consulting & Integration Bootcamp | November 2026
 > Concept demo with fictional data. Not affiliated with or endorsed by Kleinanzeigen. Product, team and offer names are fictional.
 
 **Version 2 (5 Nov 2026):** updated after the Step 6 prototype (Section 7). Changes: gpt-5.4-mini, 512-dimension embeddings, recursive character chunking, Cohere reranker, sales-team routing, public chat, and a Python + Gradio staging app on Render.
+https://kleinanzeigen-lead-qualifier.onrender.com/
 
 ---
 
@@ -31,7 +32,7 @@ Businesses contact Kleinanzeigen about business seller packages and advertising 
 - Required fields (business name, category, listing volume, need, budget, timeline) are extracted into the output record
 - Offer facts in drafted replies come from the retrieved knowledge base, not invented, and never from the 2025 archive
 - The execution trace shows every step from input to output
-- I measured 11.396989 seconds for the Python proof run, including the Airtable save. I did not retrieve an n8n execution time.
+- I measured 11.39 seconds for the  proof run, including the Airtable save.
 
 ### Current process (manual)
 1. Inquiry lands in a shared inbox or CRM
@@ -407,7 +408,7 @@ These are earlier Step 6 notes from this plan. I report the current submission c
 | Python proof run | PASS: Warm, score 65, SMB Sales; 5 chunks; 1,650 input and 216 output tokens; 11.396989 seconds including Airtable save |
 | Four Python demo leads | PASS: all 4 matched expected rating and sales team; mean 2.475 seconds, max 3.9 seconds; measured LLM cost $0.001881 per lead |
 | Airtable cross-check | PASS for the Python proof record. FAIL for n8n parity: I read 13 records and found no matching Source demo rows for the four leads |
-| Render deployment | Not verified. I did not find a public URL in the repository files |
+| Render deployment | https://kleinanzeigen-lead-qualifier.onrender.com/ |
 
 ---
 
