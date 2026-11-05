@@ -93,6 +93,7 @@ Success metrics:
 | Escalation failure | Complex cases may not be escalated correctly | Medium | High | Use explicit routing rules and a human handoff workflow with ticket notes and summary data |
 | API or system outages | Support system or knowledge base integration may fail | Medium | Medium | Add retry logic, queue retries, and status monitoring for all downstream services |
 | Data privacy concerns | Customer account details or conversation history may be exposed | Low | High | Restrict access to authorized users, redact sensitive details, and log only minimal metadata |
+| Prompt injection | A customer message or retrieved document may try to override the agent's instructions or tool behavior | Medium | High | Treat user content as untrusted data, separate instruction and data boundaries, validate tool calls, and block high-risk actions unless confirmed by policy or a human |
 | Customer trust issues | Customers may dislike automated responses or feel misrouted | Medium | Medium | Keep a clear human escalation path and provide transparent service messaging |
 
 #### Step 5: Create Project Plan
