@@ -84,6 +84,31 @@ Success metrics:
 - 85%+ of escalated cases are routed to the correct team or queue
 - Customer satisfaction for automated replies remains at or above 4.0/5 in pilot feedback
 
+```text
+Final MVP Scope Diagram
+
++---------------------------------------------------------------+
+| Customer Support Agent MVP                                     |
++---------------------------------------------------------------+
+| 1. Receive support ticket                                      |
+|    ↓                                                          |
+| 2. Classify issue (billing, shipping, refund, tech)           |
+|    ↓                                                          |
+| 3. Retrieve approved KB + minimal customer context            |
+|    ↓                                                          |
+| 4. Generate grounded response with evidence                   |
+|    ↓                                                          |
+| 5. Validate policy fit and risk level                          |
+|    ↓                                                          |
+| 6. If low-risk: send automated reply                          |
+|    ↓                                                          |
+| 7. If high-risk/complex: escalate to human agent              |
+|    ↓                                                          |
+| 8. Log interaction and review outcomes                        |
++---------------------------------------------------------------+
+
+```
+
 #### Step 4: Assess Risks and Mitigation
 
 | Risk | Description | Probability | Impact | Mitigation |
@@ -162,3 +187,6 @@ Resources Needed:
   - LLM and embedding usage costs
   - Vector database, workflow hosting, monitoring, and log-storage costs
   - Integration development and ongoing knowledge-base maintenance
+
+
+
