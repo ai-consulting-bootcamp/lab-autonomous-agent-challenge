@@ -2,7 +2,7 @@
 
 This lab proof documents one autonomous-agent workflow path for a customer support agent. The workflow receives a customer support ticket, classifies the issue, retrieves the relevant knowledge base or account context, responds with a helpful answer, and escalates to a human agent when the request is too complex or the customer needs special handling.
 
-### Part 1: Planning 
+### Planning 
 
 #### Step 1: Select a Use Case
 
