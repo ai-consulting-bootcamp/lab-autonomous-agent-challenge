@@ -1,0 +1,46 @@
+{
+  "status": "FAIL",
+  "table": "Leads",
+  "records_read": 14,
+  "proof_execution_id": "gradio-01847d0d",
+  "proof_run_record": {
+    "id": "recMYbLIbIWkjQDTF",
+    "createdTime": "2026-11-05T19:06:16.000Z",
+    "fields": {
+      "Budget": "Not stated",
+      "Category": "Home & garden",
+      "Listing volume": 150,
+      "Drafted reply": "Hello Lena, thanks for reaching out. For a Home & Garden business with around 150 listings a month, the Plus package and the Home & Garden Retail bundle look like a fit. Promotion options for your best items are available; a sales rep will confirm the exact setup. When would you like to start, and do you already have a budget in mind?",
+      "Execution ID": "gradio-01847d0d",
+      "Timeline": "soon",
+      "Business name": "Nordlicht Moebel GmbH",
+      "Consent": true,
+      "Lead score": 65,
+      "Submitted at": "2026-11-05T19:06:15.512Z",
+      "Rating": "Warm",
+      "Sales team": "SMB Sales",
+      "Score reason": "Supported category, 150 listings, clear need; vague timeline and no budget.",
+      "KB sources": "Section 2.2 Plus package, Section 3.3 Home & Garden Retail bundle",
+      "Inquiry": "We sell used furniture from our Berlin warehouse and want to list around 150 items a month. Which package fits us, and can we promote our best items? We would like to start soon.",
+      "Need": "List used furniture and promote best items",
+      "Contact email": "lead@example.com",
+      "Next action": "Warm: rep sends drafted follow-up question",
+      "Source": "gradio proof",
+      "Contact name": "Lena Hartmann"
+    }
+  },
+  "n8n_demo_source": "demo",
+  "latest_demo_records_by_business_name": {
+    "Spreeblick Automobile GmbH": null,
+    "Nordlicht Moebel GmbH": null,
+    "Private": null,
+    "Test Shop": null
+  },
+  "missing_demo_business_names": [
+    "Spreeblick Automobile GmbH",
+    "Nordlicht Moebel GmbH",
+    "Private",
+    "Test Shop"
+  ],
+  "reason": "Latest n8n demo record was not found for: Spreeblick Automobile GmbH, Nordlicht Moebel GmbH, Private, Test Shop"
+}
