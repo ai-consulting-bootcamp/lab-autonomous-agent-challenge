@@ -1,0 +1,9 @@
+{
+  "name": "Sofia",
+  "email": "sofia@example.com",
+  "company": "Green Dental Clinic",
+  "company_size": 35,
+  "industry": "healthcare",
+  "job_title": "Practice Manager",
+  "message": "We want to stop booking appointments by phone. Can your software help?"
+}
