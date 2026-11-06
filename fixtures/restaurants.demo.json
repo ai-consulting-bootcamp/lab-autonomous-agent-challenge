@@ -1,0 +1,86 @@
+[
+  {
+    "id": "demo-gr-01",
+    "name": "Demo Greek Bistro",
+    "city": "Heidelberg",
+    "cuisine": ["Greek", "Mediterranean"],
+    "price_level_eur": 25,
+    "booking_channel": "unknown",
+    "booking_url": null,
+    "atmosphere": null,
+    "source": "fictional_demo_fixture",
+    "last_verified": null
+  },
+  {
+    "id": "demo-gr-02",
+    "name": "Demo Aegean Table",
+    "city": "Heidelberg",
+    "cuisine": ["Greek"],
+    "price_level_eur": 38,
+    "booking_channel": "online",
+    "booking_url": null,
+    "atmosphere": null,
+    "source": "fictional_demo_fixture",
+    "last_verified": null
+  },
+  {
+    "id": "demo-med-01",
+    "name": "Demo Mediterranean Kitchen",
+    "city": "Heidelberg",
+    "cuisine": ["Mediterranean"],
+    "price_level_eur": 22,
+    "booking_channel": "offline",
+    "booking_url": null,
+    "atmosphere": null,
+    "source": "fictional_demo_fixture",
+    "last_verified": null
+  },
+  {
+    "id": "demo-it-01",
+    "name": "Demo Pasta Corner",
+    "city": "Heidelberg",
+    "cuisine": ["Italian"],
+    "price_level_eur": 20,
+    "booking_channel": "online",
+    "booking_url": null,
+    "atmosphere": null,
+    "source": "fictional_demo_fixture",
+    "last_verified": null
+  },
+  {
+    "id": "demo-ko-01",
+    "name": "Demo Seoul Kitchen",
+    "city": "Heidelberg",
+    "cuisine": ["Korean"],
+    "price_level_eur": 28,
+    "booking_channel": "unknown",
+    "booking_url": null,
+    "atmosphere": null,
+    "source": "fictional_demo_fixture",
+    "last_verified": null
+  },
+  {
+    "id": "demo-tr-01",
+    "name": "Demo Anatolia Table",
+    "city": "Heidelberg",
+    "cuisine": ["Turkish", "Mediterranean"],
+    "price_level_eur": 18,
+    "booking_channel": "unknown",
+    "booking_url": null,
+    "atmosphere": null,
+    "source": "fictional_demo_fixture",
+    "last_verified": null
+  },
+  {
+    "id": "demo-gr-03",
+    "name": "Demo Aachen Taverna",
+    "city": "Aachen",
+    "cuisine": ["Greek", "Mediterranean"],
+    "price_level_eur": 24,
+    "booking_channel": "offline",
+    "booking_url": null,
+    "atmosphere": null,
+    "source": "fictional_demo_fixture",
+    "last_verified": null
+  }
+]

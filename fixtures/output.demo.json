@@ -1,0 +1,40 @@
+{
+  "alternative_restaurants": [],
+  "availability_checked": false,
+  "data_mode": "synthetic_demo",
+  "intent": "discovery",
+  "matched_restaurants": [
+    {
+      "atmosphere": null,
+      "booking_channel": "unknown",
+      "booking_url": null,
+      "city": "Heidelberg",
+      "cuisine": [
+        "Greek",
+        "Mediterranean"
+      ],
+      "last_verified": null,
+      "name": "Demo Greek Bistro",
+      "price_level_eur": 25,
+      "reason": "Heidelberg record with requested cuisine and within the requested price limit",
+      "restaurant_id": "demo-gr-01",
+      "source": "fictional_demo_fixture"
+    }
+  ],
+  "message": "Found 1 fictional demo match(es) for Greek in Heidelberg up to €30: Demo Greek Bistro. Demo Greek Bistro: booking channel unknown. No live availability was checked.",
+  "preferences": {
+    "atmosphere_requested": false,
+    "booking_requested": false,
+    "budget_max_eur": 30,
+    "city": "Heidelberg",
+    "cuisine": "Greek",
+    "date": null,
+    "extraction_mode": "rule_based_demo",
+    "intent": "discovery",
+    "party_size": null,
+    "time": null
+  },
+  "search_performed": true,
+  "session_id": "demo-session-001",
+  "status": "ok"
+}

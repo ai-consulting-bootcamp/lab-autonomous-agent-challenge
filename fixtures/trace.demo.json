@@ -1,0 +1,75 @@
+{
+  "environment": "local-python-runner",
+  "executed_at": "2026-11-06T11:34:31Z",
+  "execution_id": "local-b6306a15-4035-4d73-8e9f-b44874f426e9",
+  "n8n_executed": false,
+  "nodes": [
+    {
+      "items_out": 1,
+      "name": "Input",
+      "stage": "trigger",
+      "status": "success"
+    },
+    {
+      "name": "Normalize & Validate Input",
+      "stage": "transform",
+      "status": "success"
+    },
+    {
+      "name": "Extract Search Preferences",
+      "stage": "transform",
+      "status": "success"
+    },
+    {
+      "name": "Enough Information for Discovery?",
+      "result": "yes",
+      "stage": "decision",
+      "status": "success"
+    },
+    {
+      "items_out": 7,
+      "name": "Read Synthetic Catalog",
+      "stage": "action",
+      "status": "success"
+    },
+    {
+      "items_out": 1,
+      "name": "Filter & Rank Matches",
+      "stage": "transform",
+      "status": "success"
+    },
+    {
+      "name": "Format Grounded Response",
+      "stage": "transform",
+      "status": "success"
+    },
+    {
+      "items_out": 1,
+      "name": "Observable Output",
+      "stage": "output",
+      "status": "success"
+    }
+  ],
+  "output_status": "ok",
+  "preference_mapping": {
+    "atmosphere_requested": false,
+    "booking_requested": false,
+    "budget_max_eur": 30,
+    "city": "Heidelberg",
+    "cuisine": "Greek",
+    "date": null,
+    "extraction_mode": "rule_based_demo",
+    "intent": "discovery",
+    "party_size": null,
+    "time": null
+  },
+  "search": {
+    "alternative_ids": [],
+    "catalog_records_read": 7,
+    "matched_ids": [
+      "demo-gr-01"
+    ],
+    "performed": true
+  },
+  "success": true
+}

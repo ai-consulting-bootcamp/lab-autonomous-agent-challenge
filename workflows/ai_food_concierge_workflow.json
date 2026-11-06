@@ -1,0 +1,133 @@
+{
+  "name": "Restaurant_Reservation_Bot_MVP",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -512,
+        0
+      ],
+      "id": "fbd897e9-7b74-41db-ba70-37f25992254d",
+      "name": "When chat message received"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "\nYou are an autonomous AI Restaurant Concierge.\n\nYour goal is to help users discover suitable restaurants through natural conversation.\n\nRules:\n1. Understand user preferences such as city, cuisine and budget.\n2. Ask follow-up questions when essential information is missing.\n3. Use the restaurant search tool to retrieve restaurant information.\n4. If no exact matches exist, independently search for reasonable alternatives.\n5. Clearly distinguish exact matches from alternatives.\n6. Only recommend restaurants returned by the tool.\n7. Never invent restaurant details or booking information.\n8. All restaurant data is fictional demo data.\n9. Never claim real-time availability or confirmed reservations.\n10. Remember user preferences from previous messages.\n\nTool input must be a JSON-encoded string containing:\ncity, cuisine, and optionally budget_max_eur.\n\nUse the tool when restaurant information is needed.\nLimit searches to 3 tool calls per user message.\n\nRespond naturally and concisely in the user's language.\n\nIMPORTANT: Whenever you recommend a restaurant, explicitly state that all restaurant names and information are fictional demo data used for testing. Never present them as real businesses."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -304,
+        0
+      ],
+      "id": "856148a2-4467-4ea0-9663-216e07f2552f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -448,
+        208
+      ],
+      "id": "7d31b638-5efa-4354-8f3b-e91eb3fdc9a5",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -304,
+        208
+      ],
+      "id": "924bb73b-2198-466b-be04-0c64850c4b14",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "description": "Search a fictional restaurant database based on user preferences.\n\nUse this tool to find restaurants matching a user's city, cuisine, and budget. You may call this tool multiple times to explore alternatives.\n\nInput: A search query containing the user's preferences.\nOutput: Matching restaurants with verified database information.\n\nNever invent restaurant details or claim live availability.\n\nInput must be a JSON-encoded string:\n{\"city\":\"Heidelberg\",\"cuisine\":\"Greek\",\"budget_max_eur\":30}\n\nCity is required. Cuisine and budget_max_eur are optional.\nWhen no results are found, you may call the tool again with alternative search parameters.\nClearly distinguish exact matches from alternative suggestions.\nAll restaurants are fictional demo records.\nNever claim live availability or confirmed reservations.",
+        "jsCode": "\nconst restaurants = [\n  [\"demo-gr-01\", \"Demo Greek Bistro\", \"Heidelberg\", [\"Greek\", \"Mediterranean\"], 25, \"unknown\"],\n  [\"demo-gr-02\", \"Demo Aegean Table\", \"Heidelberg\", [\"Greek\"], 38, \"online\"],\n  [\"demo-med-01\", \"Demo Mediterranean Kitchen\", \"Heidelberg\", [\"Mediterranean\"], 22, \"offline\"],\n  [\"demo-it-01\", \"Demo Pasta Corner\", \"Heidelberg\", [\"Italian\"], 20, \"online\"],\n  [\"demo-ko-01\", \"Demo Seoul Kitchen\", \"Heidelberg\", [\"Korean\"], 28, \"unknown\"],\n  [\"demo-tr-01\", \"Demo Anatolia Table\", \"Heidelberg\", [\"Turkish\", \"Mediterranean\"], 18, \"unknown\"],\n  [\"demo-gr-03\", \"Demo Aachen Taverna\", \"Aachen\", [\"Greek\", \"Mediterranean\"], 24, \"offline\"]\n].map(([id, name, city, cuisine, price, booking]) => ({\n  restaurant_id: id,\n  name,\n  city,\n  cuisine,\n  price_level_eur: price,\n  booking_channel: booking,\n  booking_url: null,\n  atmosphere: null,\n  source: \"fictional_demo_fixture\",\n  last_verified: null\n}));\n\n// Parse structured search parameters\nlet input;\ntry {\n  input = typeof query === \"string\" ? JSON.parse(query) : query;\n} catch {\n  return JSON.stringify({\n    status: \"invalid_input\",\n    message: \"Provide a JSON string with city, cuisine and optional budget_max_eur.\"\n  });\n}\n\nif (!input || typeof input !== \"object\" || Array.isArray(input)) {\n  return JSON.stringify({ status: \"invalid_input\" });\n}\n\nconst city = String(input.city ?? \"\").trim();\nconst cuisine = String(input.cuisine ?? \"\").trim();\nconst rawBudget = input.budget_max_eur;\nconst budget = rawBudget == null ? null : Number(rawBudget);\n\nif (!city) {\n  return JSON.stringify({\n    status: \"missing_city\",\n    message: \"Ask the user which city they want to search in.\"\n  });\n}\n\nif (budget !== null && (!Number.isFinite(budget) || budget < 0)) {\n  return JSON.stringify({ status: \"invalid_budget\" });\n}\n\n// Filter matching restaurants\nconst matches = restaurants.filter(r =>\n  r.city.toLowerCase() === city.toLowerCase() &&\n  (!cuisine || r.cuisine.some(c =>\n    c.toLowerCase() === cuisine.toLowerCase()\n  )) &&\n  (budget === null || r.price_level_eur <= budget)\n);\n\n// Sort by price\nmatches.sort((a, b) => a.price_level_eur - b.price_level_eur);\n\n// Return grounded results\nreturn JSON.stringify({\n  status: \"ok\",\n  data_mode: \"synthetic_demo\",\n  search: { city, cuisine, budget_max_eur: budget },\n  match_count: matches.length,\n  matched_restaurants: matches,\n  availability_checked: false,\n  message: matches.length\n    ? \"Matching fictional restaurants found.\"\n    : \"No matching restaurants. The agent may search for alternatives.\"\n});"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        -160,
+        208
+      ],
+      "id": "54ae9c89-9570-4622-9e02-8eddaa0afd42",
+      "name": "Code Tool"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "tags": []
+}
