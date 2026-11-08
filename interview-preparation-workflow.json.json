@@ -1,0 +1,135 @@
+{
+  "name": "Interview Prep Agent – MVP",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        -64
+      ],
+      "id": "1bf774de-7c2b-4a1a-9175-fb47604accf9",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3dc6b3bd-a534-4b92-a97b-27e964c78f60",
+              "name": "company_name",
+              "value": "n8n",
+              "type": "string"
+            },
+            {
+              "id": "a04f921a-ca13-43c3-bd0b-d2c56833c064",
+              "name": "job_description",
+              "value": "We are looking for a Product Manager who can conduct user research, define product requirements, prioritize features, work with engineering teams, and use data to improve digital products.",
+              "type": "string"
+            },
+            {
+              "id": "631a099e-1c10-426e-8641-67ffaf954359",
+              "name": "cv_text",
+              "value": "The candidate has experience in user research, product discovery, requirements definition, usability testing, stakeholder coordination, Jira, Confluence, Figma, and managing digital product projects.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -144,
+        -64
+      ],
+      "id": "a137a87c-3ec1-4c14-8ad8-63db0f27f4db",
+      "name": "Prepare Input"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://driving-forever-syndrome-emerging.trycloudflare.com/prepare",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"company_name\": \"{{$json.company_name}}\",\n  \"job_description\": \"{{$json.job_description}}\",\n  \"cv_text\": \"{{$json.cv_text}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        64,
+        -64
+      ],
+      "id": "a208670b-706c-48d0-bc96-31a2123ff650",
+      "name": "Generate Interview Report",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "c7VwGiJxTDvycAzA",
+          "name": "Header Auth account 13"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Prepare Input": [
+      {
+        "json": {
+          "company_name": "n8n",
+          "job_description": "We are looking for a Product Manager who can conduct user research, define product requirements, prioritize features, work with engineering teams, and use data to improve digital products.",
+          "cv_text": "The candidate has experience in user research, product discovery, requirements definition, usability testing, stakeholder coordination, Jira, Confluence, Figma, and managing digital product projects."
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Prepare Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Input": {
+      "main": [
+        [
+          {
+            "node": "Generate Interview Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "33f45c07-4f5e-47f3-a01b-65512308dde1",
+  "meta": {
+    "instanceId": "49b42c0051ee1c04693c425c4d57eeb1072531f55d1515f0d9aeb5a5977f030a"
+  },
+  "id": "85BCObMqVF70wSn2",
+  "tags": []
+}
