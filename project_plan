@@ -1,0 +1,117 @@
+# Autonomous Agent Project Plan: RCSA Evidence & Challenge Agent
+
+## 1. Use Case
+
+**Problem statement.** A Risk and Control Self-Assessment (RCSA) depends on process owners rating their own risks and controls. In practice it takes months and many workshops, and the result is weak: owners mark risks "not applicable" or controls "effective" while internal loss events and KRIs show the opposite. Nobody checks the answers against the evidence in a structured way.
+
+**What the agent does.** The process owner describes a process step by step, together with the previous RCSA (risks and controls per step). The agent:
+1. proposes possible risks per process step and estimates inherent likelihood and impact,
+2. asks the owner to answer every risk (applicable or not, and which control exists),
+3. challenges each answer against internal loss events and KRIs,
+4. calculates control effectiveness and residual risk,
+5. produces a challenge report for second-line review (human validation).
+
+**Target users.**
+- Primary: Operational risk / second line (ORM) team running the RCSA cycle.
+- Secondary: First-line process owners filling in the assessment.
+
+**Current process (manual).** ORM sends Excel templates, holds workshops per process, owners fill in risks and controls, ORM reviews by hand and chases inconsistencies by email. Loss events and KRIs sit in separate systems and are rarely cross-checked against the answers.
+
+**Verification (how we know it works).**
+- For a test process with known seeded issues, the agent flags every case where an owner said "not applicable" but a loss event exists.
+- Residual risk is never zero when a linked loss event exists.
+- Every challenge in the report cites the loss event ID or KRI ID it is based on.
+- A risk reviewer agrees with at least 80% of the challenges on the test set.
+
+## 2. Technology Stack
+
+| Question | Answer | Consequence |
+|---|---|---|
+| Needs external knowledge? | Yes, but internal only: risk library, loss events, KRIs | Structured lookup (no vector RAG in MVP) |
+| Interacts with external systems? | Yes: loss event DB, KRI data, report output | Tools (Python functions) |
+| Multi-step reasoning? | Yes: propose → collect answers → challenge → score → report | LangGraph |
+| Integrates with business systems? | Later (GRC tool, Jira, email) | Not in MVP; standalone Python |
+| Autonomous? | Partly: runs end to end per process, then stops for human validation | Human-in-the-loop checkpoint |
+
+**Selected stack**
+- **Core LLM:** OpenAI (gpt-4o-mini for risk proposal and challenge text).
+- **RAG components:** None in MVP. Evidence is structured (loss events, KRIs, risk library as CSV/JSON) and is retrieved by exact keys (process step, risk category). Vector search would add noise and make citations less reliable.
+- **Agent framework:** LangGraph (Python). Each RCSA stage is a node with typed shared state.
+- **Orchestration:** None in MVP (run on demand from CLI/notebook).
+- **Tools/integrations:** `get_previous_rcsa`, `get_loss_events(process_step)`, `get_kris(risk_id)`, `score_control_effectiveness`, `write_report`.
+
+**Why these choices**
+- LangGraph gives explicit nodes and state, so each step is traceable and a reviewer can see why a risk was challenged. This matters in a regulated setting.
+- Challenge rules (loss event exists → applicable; residual risk cannot be zero) are **deterministic Python**, not LLM output. The LLM proposes risks and writes explanations; it does not decide pass/fail.
+
+**Alternatives considered**
+- **n8n:** fast to build and good for integrations, but complex branching state and rule logic is harder to test and version.
+- **Plain LangChain agent:** simpler, but tool order is left to the model; the RCSA flow must be fixed and auditable.
+- **Vector RAG over loss event descriptions:** useful later for fuzzy matching of free-text loss events, not needed when events are tagged by process and risk category.
+
+**Trade-offs:** More code than n8n, no UI in MVP; in return the logic is testable, deterministic where it matters, and auditable.
+
+## 3. MVP Scope
+
+**Brainstormed features**
+Risk proposal per step · inherent risk scoring · owner Q&A · loss event challenge · KRI challenge · control effectiveness score · residual risk · challenge report · preventive/detective control check · risk library mapping · web UI · GRC tool integration · scheduling per RCSA cycle · multi-process portfolio view · email reminders to owners · trend dashboard · multi-language (DE/EN) · free-text loss event matching (RAG).
+
+| Must-have (MVP) | Should-have (v2) | Nice-to-have (v3+) |
+|---|---|---|
+| One process input (JSON) with previous RCSA | Preventive vs detective check against loss event text | GRC tool integration |
+| Risk proposal per step from a risk library | Simple web UI for owners | Portfolio dashboard and trends |
+| Owner answers as structured input | Multiple processes per run | Scheduled RCSA cycles, reminders |
+| Loss event and KRI challenge rules | Export to Excel | DE/EN language support |
+| Control effectiveness + residual risk score | | RAG for free-text loss events |
+| Markdown challenge report with evidence IDs | | |
+| Human validation step before final report | | |
+
+**Included:** one process (vendor onboarding), synthetic data, English only, CLI run, one report.
+
+**Excluded:** UI, real bank data, integrations, scheduling, multi-process runs, internet/news research.
+
+**Success metrics**
+- 100% of seeded "not applicable but loss event exists" cases are flagged.
+- 0 cases of zero residual risk where a loss event exists.
+- 100% of challenges cite an evidence ID.
+- One full run under 2 minutes and under €0.10 in API cost.
+- Reviewer agreement ≥ 80% on challenges.
+
+## 4. Risk Assessment
+
+| # | Risk | Category | Prob. | Impact | Mitigation |
+|---|---|---|---|---|---|
+| 1 | LLM proposes irrelevant or invented risks | Technical | Medium | High | Restrict proposals to the risk library taxonomy; validate output against library IDs; reject unknown IDs |
+| 2 | LLM changes a challenge decision (hallucinated pass/fail) | Technical | Medium | High | Challenge rules and scoring in deterministic Python; LLM only writes the explanation |
+| 3 | Malformed LLM JSON breaks the graph | Technical | Medium | Medium | Structured output / Pydantic schema; one retry; fail the node with a clear error |
+| 4 | API cost or rate limits | Technical | Low | Medium | gpt-4o-mini; one call per step, not per risk; log token usage per run |
+| 5 | Loss events not tagged to process step | Data | High | High | Mapping table step → risk category; flag untagged events as "unmapped" in report instead of ignoring them |
+| 6 | Confidential loss data sent to external LLM | Data / privacy | Medium | High | Synthetic data in MVP; in production, send only IDs and categories, no amounts or names; enterprise API / data processing agreement |
+| 7 | Owners see the tool as a "policing" tool and resist | Business | Medium | Medium | Position as preparation support; owner sees challenges before second line |
+| 8 | Scope creep into a full GRC tool | Business | High | Medium | Fixed MVP list above; new requests go to v2 backlog |
+| 9 | Over-reliance: second line accepts AI output without review | Business / governance | Medium | High | Mandatory human validation node; report marked "draft" until approved |
+
+## 5. Implementation Plan
+
+| Phase | Work | Estimate | Milestone |
+|---|---|---|---|
+| 1. Setup and data | Synthetic vendor onboarding process, previous RCSA, risk library, loss events, KRIs (JSON/CSV); state schema | 1 day | Data files load and validate |
+| 2. Core agent | LangGraph nodes: load → propose risks → collect answers → challenge → score → report; tools | 2 days | One run end to end |
+| 3. Integration and testing | Seeded test cases, rule unit tests, error handling, trace logging | 1 day | All success metrics pass on test set |
+| 4. Deployment and monitoring | README, run script, cost/token logging, human validation step | 1 day | Reviewer can reproduce one run |
+
+**Dependencies:** OpenAI API key; synthetic data must exist before Phase 2; risk library must be fixed before rule tests.
+
+**Resources**
+- Team: me (developer + risk SME); one reviewer from the cohort/instructor for agreement check.
+- Tools: Python, LangGraph, OpenAI API, VS Code, GitHub.
+- Budget: MVP API cost below €5 for all development and test runs (gpt-4o-mini).
+
+## 6. Success Metrics
+
+**MVP (technical):** seeded-issue detection rate 100%, evidence citation rate 100%, run time < 2 min, cost per run < €0.10.
+
+**Business (after pilot):**
+- Time to complete one process RCSA reduced from weeks of workshops to one owner session plus one review.
+- Share of owner answers changed after challenge (shows the challenge adds value).
+- Number of "not applicable" answers overturned by evidence.
